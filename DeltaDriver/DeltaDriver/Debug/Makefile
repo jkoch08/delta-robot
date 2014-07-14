@@ -65,10 +65,7 @@ ADDITIONAL_DEPENDENCIES:=
 
 OUTPUT_FILE_DEP:= ./makedep.mk
 
-LIB_DEP+=  \
-J:/Dropbox/CAD/Me115b\ Delta\ Robot/Code/CM700_Library/lib/libdynamixel.a \
-J:/Dropbox/CAD/Me115b\ Delta\ Robot/Code/CM700_Library/lib/libserial.a \
-J:/Dropbox/CAD/Me115b\ Delta\ Robot/Code/CM700_Library/lib/libzigbee.a
+LIB_DEP+= 
 
 # AVR32/GNU C Compiler
 
@@ -106,7 +103,7 @@ all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP)
 	@echo Building target: $@
 	@echo Invoking: AVR/GNU Linker : 4.3.3
-	$(QUOTE)C:\WinAVR-20100110\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="DeltaDriver.map" -Wl,--start-group -Wl,-lm -Wl,-ldynamixel -Wl,-lserial -Wl,-lzigbee  -Wl,--end-group -Wl,-L"J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib"  -Wl,--gc-sections -mrelax -mmcu=atmega2561 -Wl,-u,vfprintf -lprintf_flt  
+	$(QUOTE)C:\WinAVR-20100110\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="DeltaDriver.map" -Wl,--start-group -Wl,-lm -Wl,-ldynamixel -Wl,-lserial -Wl,-lzigbee  -Wl,--end-group -Wl,-L"../../../CM700_Library/lib"  -Wl,--gc-sections -mrelax -mmcu=atmega2561 -Wl,-u,vfprintf -lprintf_flt  
 	@echo Finished building target: $@
 	"C:\WinAVR-20100110\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "DeltaDriver.elf" "DeltaDriver.hex"
 	"C:\WinAVR-20100110\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "DeltaDriver.elf" "DeltaDriver.eep" || exit 0

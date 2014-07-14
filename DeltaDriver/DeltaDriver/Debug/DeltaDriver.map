@@ -74,11 +74,11 @@ c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(log.
                               c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(pow.o) (log)
 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(modf.o)
                               c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(exp.o) (modf)
-J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
+../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
                               DeltaDriver.o (dxl_get_rxpacket_error)
-J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
-                              J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o) (dxl_hal_open)
-J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+                              ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o) (dxl_hal_open)
+../../../CM700_Library/lib\libserial.a(serial.o)
                               DeltaDriver.o (serial_initialize)
 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
                               (vfprintf)
@@ -93,7 +93,7 @@ c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strn
 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(strnlen.o)
                               c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o) (strnlen)
 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fdevopen.o)
-                              J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o) (fdevopen)
+                              ../../../CM700_Library/lib\libserial.a(serial.o) (fdevopen)
 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fgetc.o)
                               DeltaDriver.o (fgetc)
 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(fputc.o)
@@ -117,11 +117,11 @@ Allocating common symbols
 Common symbol       size              file
 
 gwReturnDelayCountNum
-                    0x2               J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
+                    0x2               ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
 __brkval            0x2               c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(malloc.o)
-gfByteTransTime_us  0x4               J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
-gwTimeoutCountNum   0x2               J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
-gwCountNum          0x2               J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
+gfByteTransTime_us  0x4               ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+gwTimeoutCountNum   0x2               ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+gwCountNum          0x2               ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
 __flp               0x2               c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(malloc.o)
 __iob               0x6               c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(iob.o)
 
@@ -246,8 +246,8 @@ Discarded input sections
  .text          0x00000000        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(modf.o)
  .data          0x00000000        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(modf.o)
  .bss           0x00000000        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a(modf.o)
- .data          0x00000000        0x0 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
- .data          0x00000000        0x0 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .data          0x00000000        0x0 ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+ .data          0x00000000        0x0 ../../../CM700_Library/lib\libserial.a(serial.o)
  .text          0x00000000        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
  .data          0x00000000        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
  .bss           0x00000000        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a(vfprintf_flt.o)
@@ -316,9 +316,9 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6/crtm25
 LOAD DeltaDriver.o
 START GROUP
 LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libm.a
-LOAD J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a
-LOAD J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a
-LOAD J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libzigbee.a
+LOAD ../../../CM700_Library/lib\libdynamixel.a
+LOAD ../../../CM700_Library/lib\libserial.a
+LOAD ../../../CM700_Library/lib\libzigbee.a
 END GROUP
 LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libprintf_flt.a
 LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
@@ -530,7 +530,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x000002d8                __vector_18
                 0x000002d8                __vector_20
                 0x000002d8                __vector_42
- .text          0x000002da      0x42e J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
+ .text          0x000002da      0x42e ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
                 0x0000068c                dxl_ping
                 0x00000300                dxl_get_rxpacket_error
                 0x0000062e                dxl_write_byte
@@ -552,7 +552,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x000005f2                dxl_read_word
                 0x000005a2                dxl_txrx_packet
                 0x000002f0                dxl_set_txpacket_parameter
- .text          0x00000708      0x3ba J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
+ .text          0x00000708      0x3ba ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
                 0x000007ba                dxl_hal_close
                 0x000009e2                dxl_hal_get_queue
                 0x00000a1a                dxl_hal_rx
@@ -564,7 +564,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x0000096a                dxl_hal_get_qstate
                 0x0000080e                dxl_hal_set_timeout
                 0x00000830                dxl_hal_timeout
- .text          0x00000ac2      0x340 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .text          0x00000ac2      0x340 ../../../CM700_Library/lib\libserial.a(serial.o)
                 0x00000c42                serial_get_queue
                 0x00000d1e                std_getchar
                 0x00000d9c                serial_initialize
@@ -801,7 +801,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
                 0x00800200                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800200      0x35b DeltaDriver.o
- .data          0x0080055b        0x2 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
+ .data          0x0080055b        0x2 ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
                 0x0080055b                gbCommStatus
  .data          0x0080055d        0x6 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr6\libc.a(malloc.o)
                 0x0080055f                __malloc_heap_start
@@ -830,17 +830,17 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
 .bss            0x0080056e      0x28c
                 0x0080056e                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x0080056e       0xea J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
+ .bss           0x0080056e       0xea ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
                 0x0080056e                gbInstructionPacket
                 0x00800654                gbRxPacketLength
                 0x00800655                gbRxGetLength
                 0x00800656                giBusUsing
                 0x0080060e                gbStatusPacket
- .bss           0x00800658      0x102 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
+ .bss           0x00800658      0x102 ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
                 0x00800759                gbDxlBufferTail
                 0x00800658                gbDxlBuffer
                 0x00800758                gbDxlBufferHead
- .bss           0x0080075a       0x84 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .bss           0x0080075a       0x84 ../../../CM700_Library/lib\libserial.a(serial.o)
                 0x008007db                gbSerialBufferTail
                 0x008007da                gbSerialBufferHead
                 0x0080075a                gbSerialBuffer
@@ -850,7 +850,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
  .bss.yBuffer   0x008007e2        0x4 DeltaDriver.o
                 0x008007e2                yBuffer
  *(COMMON)
- COMMON         0x008007e6        0xa J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
+ COMMON         0x008007e6        0xa ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
                 0x008007e6                gwReturnDelayCountNum
                 0x008007e8                gfByteTransTime_us
                 0x008007ec                gwTimeoutCountNum
@@ -925,11 +925,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
  .debug_aranges
                 0x00000000       0x80 DeltaDriver.o
  .debug_aranges
-                0x00000080       0x20 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
+                0x00000080       0x20 ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
  .debug_aranges
-                0x000000a0       0x20 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
+                0x000000a0       0x20 ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
  .debug_aranges
-                0x000000c0       0x20 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+                0x000000c0       0x20 ../../../CM700_Library/lib\libserial.a(serial.o)
 
 .debug_pubnames
                 0x00000000      0x5da
@@ -937,58 +937,58 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr6\libgcc.a
  .debug_pubnames
                 0x00000000      0x11f DeltaDriver.o
  .debug_pubnames
-                0x0000011f      0x24f J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
+                0x0000011f      0x24f ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
  .debug_pubnames
-                0x0000036e      0x172 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
+                0x0000036e      0x172 ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
  .debug_pubnames
-                0x000004e0       0xfa J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+                0x000004e0       0xfa ../../../CM700_Library/lib\libserial.a(serial.o)
 
 .debug_info     0x00000000     0x16e6
  *(.debug_info)
  .debug_info    0x00000000      0x7bb DeltaDriver.o
- .debug_info    0x000007bb      0x5d9 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
- .debug_info    0x00000d94      0x486 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
- .debug_info    0x0000121a      0x4cc J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .debug_info    0x000007bb      0x5d9 ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
+ .debug_info    0x00000d94      0x486 ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+ .debug_info    0x0000121a      0x4cc ../../../CM700_Library/lib\libserial.a(serial.o)
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev   0x00000000      0x82c
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x26b DeltaDriver.o
- .debug_abbrev  0x0000026b      0x21d J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
- .debug_abbrev  0x00000488      0x173 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
- .debug_abbrev  0x000005fb      0x231 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .debug_abbrev  0x0000026b      0x21d ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
+ .debug_abbrev  0x00000488      0x173 ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+ .debug_abbrev  0x000005fb      0x231 ../../../CM700_Library/lib\libserial.a(serial.o)
 
 .debug_line     0x00000000     0x165a
  *(.debug_line)
  .debug_line    0x00000000      0xa59 DeltaDriver.o
- .debug_line    0x00000a59      0x533 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
- .debug_line    0x00000f8c      0x38e J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
- .debug_line    0x0000131a      0x340 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .debug_line    0x00000a59      0x533 ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
+ .debug_line    0x00000f8c      0x38e ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+ .debug_line    0x0000131a      0x340 ../../../CM700_Library/lib\libserial.a(serial.o)
 
 .debug_frame    0x00000000      0x3a0
  *(.debug_frame)
  .debug_frame   0x00000000       0xe0 DeltaDriver.o
- .debug_frame   0x000000e0      0x160 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
- .debug_frame   0x00000240       0xc0 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
- .debug_frame   0x00000300       0xa0 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .debug_frame   0x000000e0      0x160 ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
+ .debug_frame   0x00000240       0xc0 ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+ .debug_frame   0x00000300       0xa0 ../../../CM700_Library/lib\libserial.a(serial.o)
 
-.debug_str      0x00000000      0x760
+.debug_str      0x00000000      0x766
  *(.debug_str)
- .debug_str     0x00000000      0x27f DeltaDriver.o
-                                0x2ca (size before relaxing)
- .debug_str     0x0000027f      0x25c J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
+ .debug_str     0x00000000      0x285 DeltaDriver.o
+                                0x2d0 (size before relaxing)
+ .debug_str     0x00000285      0x25c ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
                                 0x2c2 (size before relaxing)
- .debug_str     0x000004db      0x179 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
+ .debug_str     0x000004e1      0x179 ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
                                 0x29d (size before relaxing)
- .debug_str     0x00000654      0x10c J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .debug_str     0x0000065a      0x10c ../../../CM700_Library/lib\libserial.a(serial.o)
                                 0x1c6 (size before relaxing)
 
 .debug_loc      0x00000000      0xe63
  *(.debug_loc)
  .debug_loc     0x00000000      0x688 DeltaDriver.o
- .debug_loc     0x00000688      0x358 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dynamixel.o)
- .debug_loc     0x000009e0      0x29e J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libdynamixel.a(dxl_hal.o)
- .debug_loc     0x00000c7e      0x1e5 J:\Dropbox\CAD\Me115b Delta Robot\Code\CM700_Library\lib\libserial.a(serial.o)
+ .debug_loc     0x00000688      0x358 ../../../CM700_Library/lib\libdynamixel.a(dynamixel.o)
+ .debug_loc     0x000009e0      0x29e ../../../CM700_Library/lib\libdynamixel.a(dxl_hal.o)
+ .debug_loc     0x00000c7e      0x1e5 ../../../CM700_Library/lib\libserial.a(serial.o)
 
 .debug_macinfo
  *(.debug_macinfo)

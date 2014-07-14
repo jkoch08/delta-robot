@@ -59,6 +59,7 @@ int parseAll(char dataIn);
 void PrintCommStatus(int CommStatus);
 void PrintErrorCode(void);
 
+
 // Declare Kinematic variables and functions
 
 struct point
