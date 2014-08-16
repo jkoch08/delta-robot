@@ -97,6 +97,7 @@ int main(void)
 	int bMoving, wPresentPos;
 	int CommStatus;
 	
+	
 	struct point p;
 	double angles[3];
 	angles[0] = 180;
@@ -153,6 +154,8 @@ int main(void)
 			p.y = (yBuffer)/1000.;
 			p.z = (zBuffer)/1000.;
 			
+			
+			
 			printf("\n\nNew input received\n");
 			
 			printf("\nIn inches:\nX: %f\nY: %f\nZ: %f\n", p.x, p.y, p.z);
@@ -189,6 +192,8 @@ int main(void)
 			dxl_write_word( 2, P_GOAL_POSITION_L, (int) angles[1]*11.3778 ); //Command #2
 			dxl_write_word( 3, P_GOAL_POSITION_L, (int) angles[2]*11.3778 ); //Command #3
 			printf("Command sent!\n\n");
+			
+			
 			dataState = OLD_DATA;
 		}
 		
