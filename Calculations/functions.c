@@ -2,48 +2,28 @@
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
+#include "functions.h"
 
 /**
  * Implements kinematics functions for a delta robot.
  */
 
-
-
-/**
- * Represents a point in 3D.
- */
-struct point
-{
-    double x;
-    double y;
-    double z;
-};
-
-int pointValid(struct point p);
-void getAngles(double* angles, struct point p);
-double getAngle1(struct point p);
-double getAngle2(struct point p);
-double getAngle3(struct point p);
-double removeExtraneous(double* viableOptions);
-double modAngle(double angle);
-int minInd1(double* lst, int length);
-int minInd2(double* lst, int length);
-
 /**
  * Returns 1 if the point 'p' is in the workspace; 0 otherwise.
- * Workspace is a cylinder of radius r centered on the z-axis, with a
- * height ranging from z_min to z_max.
+ * Workspace is a cylinder of radius R_MIN centered on the z-axis, with a
+ * height ranging from Z_MIN to Z_MAX.
  */
+ /* TODO: CHANGE WORKSPACE WITH PEN TO AVOID CLAMPS AND STAY ON PAPER.
+          WHEN THE **BOTTOM OF THE PEN** IS AT Z = -13.5, THE TOOL MUST BE
+          CONFINED TO THE RECTANGLE X : [-4.69, 4.69]; Y : [-3.74, 3.74]. */
  int pointValid(struct point p)
  {
-     double r = 6.0;        /* Radius of cylinder in inches. */
-     double z_min = -13.0;  /* Lowest height in inches. */
-     double z_max = -8.0;   /* Maximum height in inches. */
-
-     return (pow(p.x, 2) + pow(p.y, 2) <= pow(r, 2) &&
-             p.z >= z_min &&
-             p.z <= z_max);
+     return (pow(p.x, 2) + pow(p.y, 2) <= pow(R_MAX, 2) &&
+             p.z >= Z_MIN &&
+             p.z <= Z_MAX);
  }
+
+
 
 /**
  * Calculates the required angles for servo actuators 1, 2, and 3 respectively
@@ -93,7 +73,7 @@ double getAngle1(struct point p)
                   + 2 * pow(p.x, 2) * (-133 + pow(p.y, 2) +
                   pow(p.z, 2))))) / (10 * (12 - 4 * sqrt(3) * p.x +
                   pow(p.x, 2) + pow(p.z, 2)));
-    
+
 	if (fabs(arg1) > 1.0)
     {
         if (fabs(arg1 - 1.0) < 0.0001) /* Slightly over 1 (from rounding error) */
@@ -109,7 +89,7 @@ double getAngle1(struct point p)
 		else
 		{
 		    options[0] = NAN;
-		    options[1] = NAN;			
+		    options[1] = NAN;
 		}
     }
     else
@@ -117,7 +97,7 @@ double getAngle1(struct point p)
         options[0] = acos(arg1);
         options[1] = -acos(arg1);
     }
-	
+
     if (fabs(arg2) > 1.0)
     {
 	    if (fabs(arg2 - 1.0) < 0.0001) /* Slightly over 1 (from rounding error) */
@@ -141,7 +121,7 @@ double getAngle1(struct point p)
         options[2] = acos(arg2);
         options[3] = -acos(arg2);
     }
-	
+
     /* REMOVE INVALID SOLUTIONS */
     double values [4]; /* One val for each option; pick 2 smallest. */
     int i; /* Iterate over options. */
@@ -229,7 +209,7 @@ double getAngle2(struct point p)
 	    options[0] = acos(arg1);
 	    options[1] = -acos(arg1);
     }
-    
+
     if (fabs(arg2) > 1.0)
     {
 	    if (fabs(arg2 - 1.0) < 0.0001) /* Slightly over 1 (from rounding error) */
@@ -253,7 +233,7 @@ double getAngle2(struct point p)
 	    options[2] = acos(arg2);
 	    options[3] = -acos(arg2);
     }
-    
+
     /* REMOVE INVALID SOLUTIONS */
     double values [4]; /* One val for each option; pick 2 smallest. */
     int i; /* Iterate over options. */
@@ -340,7 +320,7 @@ double getAngle3(struct point p)
 	    options[0] = acos(arg1);
 	    options[1] = -acos(arg1);
     }
-    
+
     if (fabs(arg2) > 1.0)
     {
 	    if (fabs(arg2 - 1.0) < 0.0001) /* Slightly over 1 (from rounding error) */
@@ -364,7 +344,7 @@ double getAngle3(struct point p)
 	    options[2] = acos(arg2);
 	    options[3] = -acos(arg2);
     }
-    
+
         /* REMOVE INVALID SOLUTIONS */
     double values [4]; /* One val for each option; pick 2 smallest. */
     int i; /* Iterate over options. */
@@ -490,26 +470,143 @@ int minInd2(double* lst, int length)
 }
 
 /**
+ * Initializes the values of the empty table 'inverseTable' with the inverse
+ * kinematics values attained by iterating x, y, z from *_TABLE_MIN to
+ * *_TABLE_MAX by *_TABLE_RES. Entries are length 3 arrays correspoding to
+ * [angle1, angle2, angle3]. Points with no kinematic solution receive angle
+ * values [0, 0, 0].
+ */
+void generateInverseTable(double inverseTable[X_TABLE_DIM]
+                          [Y_TABLE_DIM][Z_TABLE_DIM][3])
+{
+    struct point p;
+    int xIndex;
+    int yIndex;
+    int zIndex;
+
+    for (xIndex = 0; xIndex < X_TABLE_DIM; xIndex++)
+    {
+        for (yIndex = 0; yIndex < Y_TABLE_DIM; yIndex++)
+        {
+            for (zIndex = 0; zIndex < Z_TABLE_DIM; zIndex++)
+            {
+                p.x = X_TABLE_MIN + X_TABLE_RES * xIndex;
+                p.y = Y_TABLE_MIN + Y_TABLE_RES * yIndex;
+                p.z = Z_TABLE_MIN + Z_TABLE_RES * zIndex;
+                getAngles(inverseTable[xIndex][yIndex][zIndex], p);
+                /* Change to [0, 0, 0] if no solution. */
+                if (isnan(inverseTable[xIndex][yIndex][zIndex][0]))
+                {
+                    inverseTable[xIndex][yIndex][zIndex][0] = 0.0;
+                    inverseTable[xIndex][yIndex][zIndex][1] = 0.0;
+                    inverseTable[xIndex][yIndex][zIndex][2] = 0.0;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Writes the table 'inverseTable' in a format that enables its initialization
+ * in the C programming language. File name is 'inverse_table.txt'.
+ */
+void writeInverseTable(double inverseTable[X_TABLE_DIM]
+                       [Y_TABLE_DIM][Z_TABLE_DIM][3])
+{
+    FILE *f = fopen("inverse_table.txt", "w");
+    if (f == NULL)
+    {
+        printf("Error opening file!\n");
+        exit(1);
+    }
+
+    /** Generate lines to be printed. */
+    int xIndex;
+    int yIndex;
+    int zIndex;
+
+    fprintf(f, "{\n");
+    for (xIndex = 0; xIndex < X_TABLE_DIM; xIndex++)
+    {
+        fprintf(f, "    {\n");
+        for (yIndex = 0; yIndex < Y_TABLE_DIM; yIndex++)
+        {
+            fprintf(f, "        {\n");
+            for (zIndex = 0; zIndex < Z_TABLE_DIM; zIndex++)
+            {
+                fprintf(f, "            {%.6f, %.6f, %.6f}",
+                       inverseTable[xIndex][yIndex][zIndex][0],
+                       inverseTable[xIndex][yIndex][zIndex][1],
+                       inverseTable[xIndex][yIndex][zIndex][2]);
+                /* Add a comma unless this is the last entry. */
+                if (zIndex != Z_TABLE_DIM - 1)
+                    fprintf(f, ",");
+                fprintf(f, "\n");
+            }
+            fprintf(f, "        }");
+            /* Add a comma unless this is the last entry. */
+            if (yIndex != Y_TABLE_DIM - 1)
+                fprintf(f, ",");
+            fprintf(f, "\n");
+        }
+        fprintf(f, "    }");
+        /* Add a comma unless this is the last entry. */
+        if (yIndex != Y_TABLE_DIM - 1)
+            fprintf(f, ",");
+        fprintf(f, "\n");
+    }
+    fprintf(f, "}\n");
+
+    fclose(f);
+}
+
+/**
+ * Determines the required angles for servo actuators 1, 2, and 3 respectively
+ * to get to a desired point 'p' (in degrees & in servo coordinates) by
+ * interpolating from values in 'inverseTable', and stores the result in
+ * 'angles'. If no solution exists, sets 'angles[0]', 'angles[1]', and
+ * 'angles[2]' equal to NAN.
+ */
+void lookupAngles(double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3],
+                  double* angles, struct point p)
+{
+    /** TODO CONTINUE HERE. */
+}
+
+/**
  * Tests various functions.
  */
 int main(void)
 {
-   struct point p;
-    p.x = 0;
-    p.y = 0;
-    p.z = -8.5064;
+    /** Generating Inverse Kinematics lookup table. */
+    double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3];
 
-    if (pointValid(p))
-        printf("Point is Valid.\n");
-    else
-        printf("Point is not Valid.\n");
+    /* Fill in elements of table. */
+    generateInverseTable(inverseTable);
+    writeInverseTable(inverseTable);
 
-    double angles[3];
-    getAngles(angles, p);
-    if (isnan(angles[0]))
-        printf("No Kinematic Solution.");
-    else
-        printf("Angle 1: %f;   Angle 2: %f;  Angle 3: %f;\n",
-               angles[0], angles[1], angles[2]);
+    /** Test Individual point. */
+
+    struct point p;
+    int i;
+    for (i = 0; i < 0; i++)
+    {
+        p.x = 0;
+        p.y = 0;
+        p.z = -9.000;
+
+        if (pointValid(p))
+            printf("Point is Valid.\n");
+        else
+           printf("Point is not Valid.\n");
+
+        double angles[3];
+        getAngles(angles, p);
+        if (isnan(angles[0]))
+            printf("No Kinematic Solution.");
+        else
+            printf("Angle 1: %f;   Angle 2: %f;  Angle 3: %f;\n",
+                   angles[0], angles[1], angles[2]);
+    }
     return 0;
 }
