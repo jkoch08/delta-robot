@@ -20,15 +20,15 @@
 /** INVERSE LOOKUP TABLE SPECS. */
 #define X_TABLE_MIN   -6.00   /* Minimum x-value in lookup table. */
 #define X_TABLE_MAX    6.00   /* Maximum x-value in lookup table. */
-#define X_TABLE_RES    0.25  /* x-axis resolution in lookup table. */
+#define X_TABLE_RES    1.00  /* x-axis resolution in lookup table. */
 
 #define Y_TABLE_MIN   -6.00   /* Minimum y-value in lookup table. */
 #define Y_TABLE_MAX    6.00   /* Maximum y-value in lookup table. */
-#define Y_TABLE_RES    0.25  /* y-axis resolution in lookup table. */
+#define Y_TABLE_RES    1.00  /* y-axis resolution in lookup table. */
 
 #define Z_TABLE_MIN  -13.00   /* Minimum z-value in lookup table. */
 #define Z_TABLE_MAX   -8.00   /* Maximum z-value in lookup table. */
-#define Z_TABLE_RES    0.25   /* z-axis resolution in lookup table. */
+#define Z_TABLE_RES    1.00   /* z-axis resolution in lookup table. */
 
 /* xyz Dimensions. */
 #define X_TABLE_DIM  (int) ((X_TABLE_MAX - X_TABLE_MIN) / X_TABLE_RES + 1)
@@ -67,5 +67,8 @@ void writeInverseTable(double inverseTable[X_TABLE_DIM]
                        [Y_TABLE_DIM][Z_TABLE_DIM][3]);
 void lookupAngles(double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3],
                   double* angles, struct point p);
+double indexToPoint(char axis, int index);
+void printAngles(char indicator[], double angles[3]);
+int pointToIndex(char axis, double point);
 
 #endif /* FUNCTIONS_H */
