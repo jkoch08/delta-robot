@@ -11,11 +11,9 @@
 /**
  * Returns 1 if the point 'p' is in the workspace; 0 otherwise.
  * Workspace is a cylinder of radius R_MIN centered on the z-axis, with a
- * height ranging from Z_MIN to Z_MAX.
+ * height ranging from Z_MIN to Z_MAX. Note: This does not check that the pen
+ * does not run into the table or clamps.
  */
- /* TODO: CHANGE WORKSPACE WITH PEN TO AVOID CLAMPS AND STAY ON PAPER.
-          WHEN THE **BOTTOM OF THE PEN** IS AT Z = -13.5, THE TOOL MUST BE
-          CONFINED TO THE RECTANGLE X : [-4.69, 4.69]; Y : [-3.74, 3.74]. */
  int pointValid(struct point p)
  {
      return (pow(p.x, 2) + pow(p.y, 2) <= pow(R_MAX, 2) &&
@@ -585,7 +583,7 @@ void lookupAngles(double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3],
         return;
     }
 
-    /* Second, find surrounding indeces corresponding to point 'p'.
+    /* Second, find surrounding indices corresponding to point 'p'.
        'xInd, yInd, and zInd represent the indices correspoinding to the lattice
        point just before 'p'. */
     int xInd = pointToIndex('x', p.x);
@@ -663,7 +661,9 @@ void lookupAngles(double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3],
        file. */
     int valid = 1;
     int i;
-    for (i = 0; i < 3; i++)
+    /* Ideally should iterate i = 0, 1, 2, but can same time by only checking
+       i = 0 case. */
+    for (i = 0; i < 1; i++)
     {
         if (isnan(ap0[i]) || isnan(ap1[i]) || isnan(ap2[i]) || isnan(ap3[i]) ||
             isnan(ap4[i]) || isnan(ap5[i]) || isnan(ap6[i]) || isnan(ap7[i]))
@@ -798,42 +798,43 @@ int pointToIndex(char axis, double point)
 /**
  * Tests various functions.
  */
-int main(void) /* TODO FIX BOUNDARY ISSUES WITH LOOKUP TABLE. */
+int main(void)
 {
-    /** Generating Inverse Kinematics lookup table. */
-    double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3];
-    /* Fill in elements of table. */
-    generateInverseTable(inverseTable);
-    writeInverseTable(inverseTable);
+//    /** Generating Inverse Kinematics lookup table. */
+//    double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3];
+//    /* Fill in elements of table. */
+//    generateInverseTable(inverseTable);
+//    /* Write inverse table to file. */
+//    writeInverseTable(inverseTable);
 
     /** Test Individual point. */
 
     struct point p;
     int i;
-    for (i = 0; i < 200000; i++)
+    for (i = 0; i < 1; i++)
     {
-        p.x = 5.9;
-        p.y = 0.5;
-        p.z = -9.01;
+        p.x = 6;
+        p.y = 0;
+        p.z = -9.0;
 
-        /*printf("Point Evaluated: (%.3f, %.3f, %.3f)\n", p.x, p.y, p.z);*/
+        printf("Point Evaluated: (%.3f, %.3f, %.3f)\n", p.x, p.y, p.z);
 
-        /*if (pointValid(p))
+        if (pointValid(p))
             printf("Point is Valid.\n");
         else
-           printf("Point is not Valid.\n");*/
+           printf("Point is not Valid.\n");
 
         double anglesExact[3];
         double anglesApprox[3];
-        /*getAngles(anglesExact, p);*/
-        lookupAngles(inverseTable, anglesApprox, p);
-        /*if (isnan(anglesExact[0]))
+        getAngles(anglesExact, p);
+        lookupAngles(INVERSE_TABLE, anglesApprox, p);
+        if (isnan(anglesApprox[0]))
             printf("No Kinematic Solution.");
         else
         {
             printAngles("EXACT ", anglesExact);
             printAngles("APPROX", anglesApprox);
-        }*/
+        }
     }
     return 0;
 }
