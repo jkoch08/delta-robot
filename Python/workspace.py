@@ -120,7 +120,7 @@ def boundByRectangle(p):
             yOut = Y_RCT_MAX        
         return (xOut, yOut, zOut)
 
-def getAdjustedPoint(pStart, pEnd):
+def boundDestination(pStart, pEnd):
     """
     Returns a point (x, y, z) that limits the point 'pEnd' = (x, y, z) to the
     boundary of the workspace. 
@@ -185,7 +185,7 @@ def getAdjustedPoint(pStart, pEnd):
                            
 if __name__ == "__main__":
     pStart = (0, 0, -12)
-    pEnd = (-3, 10, 0)
+    pEnd = (0, 0, -4.25196)
     print "Start:       " + str(pStart)
     print "Desired End: " + str(pEnd)
-    print "Actual End:  " + str(getAdjustedPoint(pStart, pEnd))
+    print "Actual End:  " + str(boundDestination(pStart, pEnd))
