@@ -95,6 +95,7 @@
       <Value>C:\WinAVR-20100110\bin</Value>
       <Value>C:\WinAVR-20100110\utils\bin</Value>
       <Value>../../../CM700_Library/include</Value>
+      <Value>../../../Calculations</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -122,6 +123,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DeltaDriver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="functions.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="functions.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

@@ -20,7 +20,8 @@ DeltaDriver.d DeltaDriver.o DeltaDriver.o: .././DeltaDriver.c \
   c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stddef.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/stdlib.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/math.h \
-  c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/float.h
+  c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/float.h \
+  .././functions.h
 
 c:/winavr-20100110/lib/gcc/../../avr/include/avr/io.h:
 
@@ -65,3 +66,5 @@ c:/winavr-20100110/lib/gcc/../../avr/include/stdlib.h:
 c:/winavr-20100110/lib/gcc/../../avr/include/math.h:
 
 c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/float.h:
+
+.././functions.h:

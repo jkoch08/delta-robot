@@ -36,7 +36,8 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../DeltaDriver.c
+../DeltaDriver.c \
+../functions.c
 
 
 PREPROCESSING_SRCS += 
@@ -46,16 +47,20 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-DeltaDriver.o
+DeltaDriver.o \
+functions.o
 
 OBJS_AS_ARGS +=  \
-DeltaDriver.o
+DeltaDriver.o \
+functions.o
 
 C_DEPS +=  \
-DeltaDriver.d
+DeltaDriver.d \
+functions.d
 
 C_DEPS_AS_ARGS +=  \
-DeltaDriver.d
+DeltaDriver.d \
+functions.d
 
 OUTPUT_FILE_PATH +=DeltaDriver.elf
 
@@ -71,10 +76,12 @@ LIB_DEP+=
 
 
 
+
+
 ./%.o: .././%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.3.3
-	$(QUOTE)C:\WinAVR-20100110\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\WinAVR-20100110\bin" -I"C:\WinAVR-20100110\utils\bin" -I"../../../CM700_Library/include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2561 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\WinAVR-20100110\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\WinAVR-20100110\bin" -I"C:\WinAVR-20100110\utils\bin" -I"../../../CM700_Library/include" -I"../../../Calculations"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega2561 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
