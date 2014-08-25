@@ -1,28 +1,31 @@
-functions.d functions.o functions.o: .././functions.c \
-  c:/winavr-20100110/lib/gcc/../../avr/include/stdio.h \
-  c:/winavr-20100110/lib/gcc/../../avr/include/inttypes.h \
-  c:/winavr-20100110/lib/gcc/../../avr/include/stdint.h \
-  c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stdarg.h \
-  c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stddef.h \
-  c:/winavr-20100110/lib/gcc/../../avr/include/stdlib.h \
-  c:/winavr-20100110/lib/gcc/../../avr/include/math.h \
-  c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/float.h \
-  .././functions.h
+functions.d functions.o: .././functions.c \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdio.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\inttypes.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdint.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdint.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdarg.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stddef.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdlib.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\math.h \
+ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\float.h \
+ .././functions.h
 
-c:/winavr-20100110/lib/gcc/../../avr/include/stdio.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdio.h:
 
-c:/winavr-20100110/lib/gcc/../../avr/include/inttypes.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\inttypes.h:
 
-c:/winavr-20100110/lib/gcc/../../avr/include/stdint.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdint.h:
 
-c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stdarg.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdint.h:
 
-c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/stddef.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdarg.h:
 
-c:/winavr-20100110/lib/gcc/../../avr/include/stdlib.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stddef.h:
 
-c:/winavr-20100110/lib/gcc/../../avr/include/math.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\stdlib.h:
 
-c:\winavr-20100110\bin\../lib/gcc/avr/4.3.3/include/float.h:
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\avr\include\math.h:
+
+c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1056\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\float.h:
 
 .././functions.h:

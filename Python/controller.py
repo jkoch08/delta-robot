@@ -2,6 +2,7 @@ from workspace import *
 from math import *
 import time
 import threading
+import serial
 import Leap
 
 #
@@ -31,7 +32,7 @@ def getFingerPos(leapController):
     distalPos    = distalBone.next_joint
     
     return (distalPos.x, distalPos.y, distalPos.z)
-
+    
 
 def transformPoint(p):
     """
@@ -131,10 +132,36 @@ class ControllerThread(threading.Thread):
         # Current estimated position of robot. 
         self.currentPos = HOME # Starts by default at home upon powerup.
         
+        # Serial object.
+        self.ser = serial.Serial()
+        self.ser.baudrate = 19200
+        self.ser.port = 0
+        self.ser.open()
+        while not self.ser.isOpen():
+            time.sleep(0.05)
+        
+        
         # Leap Controller.
         self.leapController = Leap.Controller()
         while not self.leapController.is_connected:
             time.sleep(0.05)
+            
+    def outputPosition(self, p):
+        """
+        Outputs the position 'p' = (x, y, z) over the serial.
+        """
+        # First, generate the string to be outputted. 
+        (x, y, z) = p
+        output = ("$" +
+                  str(int(round(x * 1000))) +
+                  "," +
+                  str(int(round(y * 1000))) +
+                  "," +                  
+                  str(int(round(z * 1000))) +
+                  "*")
+        # Write over the serial line.
+        self.ser.write(output)
+        
     
     def run(self):
         """
@@ -152,15 +179,19 @@ class ControllerThread(threading.Thread):
                 desiredPos = transformPoint(fingerPos) # Desired move position
 ####                print "DESIRED:    " + str(desiredPos)
                 boundedPos = boundDestination(self.currentPos, desiredPos)
-                print "BOUNDED:    " + str(boundedPos)
+####                print "BOUNDED:    " + str(boundedPos)
                 restrainedPos = restrainMove(self.currentPos, boundedPos)
                     # Make move distance no more than 1" for mechanism safety.
 ####                print "RESTRAINED: " + str(restrainedPos
 ####                print "\n"
                 posOut = restrainedPos
 
-            # TODO SEND 'posOut' TO THE ROBOT
+            # SEND 'posOut' TO THE ROBOT
+            self.outputPosition(posOut)
 ####            print "OUT:         " + str(posOut)
+
             self.currentPos = posOut # Save position just sent to robot.
             time.sleep(0.10) # Sloppy way to ensure robot gets to position.
                              # Better would be to have feedback.
+        
+        self.ser.close() # Close serial after thread is killed.

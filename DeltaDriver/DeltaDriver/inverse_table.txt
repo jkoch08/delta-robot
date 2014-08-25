@@ -1,80 +1,3 @@
-/**
- * Implements kinematics functions for a delta robot.
- */
-
-#ifndef __FUNCTIONS_H
-#define __FUNCTIONS_H
-
-/**
- * GLOBAL CONSTANTS
- */
-
-/** WORKSPACE. */
-/* The workspace is a cylinder of radius R_MAX in the XY-plane from
-   Z_MIN to Z_MAX.
-*/
-/* Everything is 0.01 larger than actual, to avoid rounding error. */
-#define R_MAX         6.01    /* Max radius of cylinder in inches. */
-#define Z_MIN       -13.01    /* Lowest height of cylinder in inches. */
-#define Z_MAX        -7.99    /* Maximum height of cylinder in inches. */
-
-/** INVERSE LOOKUP TABLE SPECS. */
-/* Includes 1" border around actual boundary. */
-#define X_TABLE_MIN   -7.00   /* Minimum x-value in lookup table. */
-#define X_TABLE_MAX    7.00   /* Maximum x-value in lookup table. */
-#define X_TABLE_RES    2.00   /* x-axis resolution in lookup table. */
-
-#define Y_TABLE_MIN   -7.00   /* Minimum y-value in lookup table. */
-#define Y_TABLE_MAX    7.00   /* Maximum y-value in lookup table. */
-#define Y_TABLE_RES    2.00   /* y-axis resolution in lookup table. */
-
-#define Z_TABLE_MIN  -14.00   /* Minimum z-value in lookup table. */
-#define Z_TABLE_MAX   -7.00   /* Maximum z-value in lookup table. */
-#define Z_TABLE_RES    1.00   /* z-axis resolution in lookup table. */
-
-/* xyz Dimensions. */
-#define X_TABLE_DIM  (int) ((X_TABLE_MAX - X_TABLE_MIN) / X_TABLE_RES + 1)
-#define Y_TABLE_DIM  (int) ((Y_TABLE_MAX - Y_TABLE_MIN) / Y_TABLE_RES + 1)
-#define Z_TABLE_DIM  (int) ((Z_TABLE_MAX - Z_TABLE_MIN) / Z_TABLE_RES + 1)
-
-
-/**
- * Represents a point in 3D.
- */
-struct point
-{
-    double x;
-    double y;
-    double z;
-};
-
-/**
- * Functions.
- */
-int pointValid(struct point p);
-void getAngles(double* angles, struct point p);
-double getAngle1(struct point p);
-double getAngle2(struct point p);
-double getAngle3(struct point p);
-double removeExtraneous(double* viableOptions);
-double modAngle(double angle);
-int minInd1(double* lst, int length);
-int minInd2(double* lst, int length);
-void generateInverseTable(double inverseTable[X_TABLE_DIM]
-                          [Y_TABLE_DIM][Z_TABLE_DIM][3]);
-void writeInverseTable(double inverseTable[X_TABLE_DIM]
-                       [Y_TABLE_DIM][Z_TABLE_DIM][3]);
-void lookupAngles(double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3],
-                  double* angles, struct point p);
-double indexToPoint(char axis, int index);
-void printAngles(char indicator[], double angles[3]);
-int pointToIndex(char axis, double point);
-
-
-/**
- * Inverse Lookup Table.
- */
-static double INVERSE_TABLE[8][8][8][3] =
 {
     {
         {
@@ -732,6 +655,4 @@ static double INVERSE_TABLE[8][8][8][3] =
             {146.979989, 205.716768, 287.676717}
         }
     },
-};
-
-#endif /* FUNCTIONS_H */
+}

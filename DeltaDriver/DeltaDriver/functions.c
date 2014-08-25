@@ -4,6 +4,8 @@
 #include <float.h>
 #include "functions.h"
 
+#define TESTING 0 /* Determines whether certain parts will be compiled. */
+
 /**
  * Implements kinematics functions for a delta robot.
  */
@@ -508,7 +510,7 @@ void generateInverseTable(double inverseTable[X_TABLE_DIM]
  * Writes the table 'inverseTable' in a format that enables its initialization
  * in the C programming language. File name is 'inverse_table.txt'.
  */
-#if 0
+#if TESTING
 void writeInverseTable(double inverseTable[X_TABLE_DIM]
                        [Y_TABLE_DIM][Z_TABLE_DIM][3])
 {
@@ -801,15 +803,15 @@ int pointToIndex(char axis, double point)
  * Tests various functions.
  */
 
-#if 0
+#if TESTING
 int main(void)
 {
-//    /** Generating Inverse Kinematics lookup table. */
-//    double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3];
-//    /* Fill in elements of table. */
-//    generateInverseTable(inverseTable);
-//    /* Write inverse table to file. */
-//    writeInverseTable(inverseTable);
+    /** Generating Inverse Kinematics lookup table. */
+    double inverseTable[X_TABLE_DIM][Y_TABLE_DIM][Z_TABLE_DIM][3];
+    /* Fill in elements of table. */
+    generateInverseTable(inverseTable);
+    /* Write inverse table to file. */
+    writeInverseTable(inverseTable);
 
     /** Test Individual point. */
 
@@ -817,9 +819,9 @@ int main(void)
     int i;
     for (i = 0; i < 1; i++)
     {
-        p.x = 6;
+        p.x = 0;
         p.y = 0;
-        p.z = -9.0;
+        p.z = -8.5;
 
         printf("Point Evaluated: (%.3f, %.3f, %.3f)\n", p.x, p.y, p.z);
 
