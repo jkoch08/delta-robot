@@ -126,7 +126,7 @@ int main(void)
 		*/
 		
 		if(parseAll(getchar()) != 0){
-			printf("\nError!\n");
+			;//printf("\nError!\n");
 			};
 		
 		if(dataState == NEW_DATA){
@@ -134,30 +134,30 @@ int main(void)
 			p.y = (yBuffer)/1000.;
 			p.z = (zBuffer)/1000.;
 			
-			printf("\n\nNew input received\n");
+			;//printf("\n\nNew input received\n");
 			
-			printf("\nIn inches:\nX: %f\nY: %f\nZ: %f\n", p.x, p.y, p.z);
+			;//printf("\nIn inches:\nX: %f\nY: %f\nZ: %f\n", p.x, p.y, p.z);
 			
 			if (pointValid(p)){
-				printf("\nPoint is Valid.\n");
+				;//printf("\nPoint is Valid.\n");
 				lookupAngles(INVERSE_TABLE, angles, p);
 				
 				if (isnan(angles[0])){
-					printf("No Kinematic Solution.");
+					;//printf("No Kinematic Solution.");
 				}
 				else{
-					printf("\nProposed position:\n");
-					printf("X Pos: %f;  Y Pos: %f;  Z Pos: %f\n", p.x, p.y, p.z);
-					printf("Angle 1: %f;  Angle 2: %f;  Angle 3: %f\n", angles[0], angles[1], angles[2]);
-					printf("Motor 1: %f;  Motor 2: %f;  Motor 3: %f\n", (int) angles[0]*11.3778, (int) angles[1]*11.3778, (int) angles[2]*11.3778);
-					printf("Confirm? (y/n)\n");
+					;//printf("\nProposed position:\n");
+					;//printf("X Pos: %f;  Y Pos: %f;  Z Pos: %f\n", p.x, p.y, p.z);
+					;//printf("Angle 1: %f;  Angle 2: %f;  Angle 3: %f\n", angles[0], angles[1], angles[2]);
+					;//printf("Motor 1: %f;  Motor 2: %f;  Motor 3: %f\n", (int) angles[0]*11.3778, (int) angles[1]*11.3778, (int) angles[2]*11.3778);
+					;//printf("Confirm?? (y/n)\n");
 				}
 			
 				dataState = CONFIRM_DATA;
 			}
 			else{
-				printf("Point is not Valid.\n");
-				printf("Abort.\n\n");
+				;//printf("Point is not Valid.\n");
+				;//printf("Abort.\n\n");
 				dataState = OLD_DATA;
 			}
 
@@ -169,7 +169,7 @@ int main(void)
 			dxl_write_word( 1, P_GOAL_POSITION_L, (int) angles[0]*11.3778 ); //4096./360=11.3778  <--- Ticks per degree
 			dxl_write_word( 2, P_GOAL_POSITION_L, (int) angles[1]*11.3778 ); //Command #2
 			dxl_write_word( 3, P_GOAL_POSITION_L, (int) angles[2]*11.3778 ); //Command #3
-			printf("Command sent!\n\n");
+			;//printf("Command sent!\n\n");
 			dataState = OLD_DATA;
 		}
 		
@@ -192,13 +192,13 @@ int parseAll(char dataIn){
 				yBuffer = 0;
 				zBuffer = 0;
 				signState = POSITIVE;	
-				printf("\nReading Packet...\n");
+				;//printf("\nReading Packet...\n");
 			}
 			else if((dataIn == 'y') && (dataState == CONFIRM_DATA)){
 				dataState = SEND_DATA;
 			}
 			else if((dataIn == 'n') && (dataState == NEW_DATA)){
-				printf("\nAbort Send!!\n\n");
+				;//printf("\nAbort Send!!\n\n");
 				dataState = OLD_DATA;
 			}
 			else{
@@ -216,13 +216,13 @@ int parseAll(char dataIn){
 				if(signState == NEGATIVE)
 					xBuffer = -(xBuffer);
 				signState = POSITIVE;
-				printf("Read X: %f thou\n", xBuffer);
+				;//printf("Read X: %f thou\n", xBuffer);
 			}
 			else if(dataIn == '-'){
 				signState = NEGATIVE;
 			}
 			else{
-				printf("\nBad Data!\n");
+				;//printf("\nBad Data!\n");
 				parseState = WATCH_BEGIN;
 			}
 			break;
@@ -236,13 +236,13 @@ int parseAll(char dataIn){
 				if(signState == NEGATIVE)
 				yBuffer = -(yBuffer);
 				signState = POSITIVE;
-				printf("Read Y: %f thou\n", yBuffer);
+				;//printf("Read Y: %f thou\n", yBuffer);
 			}
 			else if(dataIn == '-'){
 				signState = NEGATIVE;
 			}
 			else{
-				printf("\nBad Data!\n");
+				;//printf("\nBad Data!\n");
 				parseState = WATCH_BEGIN;
 			}
 			break;
@@ -255,7 +255,7 @@ int parseAll(char dataIn){
 				if(signState == NEGATIVE)
 				zBuffer = -(zBuffer);
 				signState = POSITIVE; //reset
-				printf("Read Z: %f thou\n", zBuffer);
+				;//printf("Read Z: %f thou\n", zBuffer);
 				dataState = NEW_DATA; 
 				parseState = WATCH_BEGIN;
 				
@@ -266,7 +266,7 @@ int parseAll(char dataIn){
 				signState = NEGATIVE;
 			}
 			else{
-				printf("\nbad Data\n");
+				;//printf("\nbad Data\n");
 				parseState = WATCH_BEGIN;
 			}
 			break;
@@ -288,31 +288,31 @@ void PrintCommStatus(int CommStatus)
 	switch(CommStatus)
 	{
 		case COMM_TXFAIL:
-		printf("COMM_TXFAIL: Failed transmit instruction packet!\n");
+		;//printf("COMM_TXFAIL: Failed transmit instruction packet!\n");
 		break;
 
 		case COMM_TXERROR:
-		printf("COMM_TXERROR: Incorrect instruction packet!\n");
+		;//printf("COMM_TXERROR: Incorrect instruction packet!\n");
 		break;
 
 		case COMM_RXFAIL:
-		printf("COMM_RXFAIL: Failed get status packet from device!\n");
+		;//printf("COMM_RXFAIL: Failed get status packet from device!\n");
 		break;
 
 		case COMM_RXWAITING:
-		printf("COMM_RXWAITING: Now recieving status packet!\n");
+		;//printf("COMM_RXWAITING: Now recieving status packet!\n");
 		break;
 
 		case COMM_RXTIMEOUT:
-		printf("COMM_RXTIMEOUT: There is no status packet!\n");
+		;//printf("COMM_RXTIMEOUT: There is no status packet!\n");
 		break;
 
 		case COMM_RXCORRUPT:
-		printf("COMM_RXCORRUPT: Incorrect status packet!\n");
+		;//printf("COMM_RXCORRUPT: Incorrect status packet!\n");
 		break;
 
 		default:
-		printf("This is unknown error code!\n");
+		;//printf("This is unknown error code!\n");
 		break;
 	}
 }
@@ -321,23 +321,23 @@ void PrintCommStatus(int CommStatus)
 void PrintErrorCode()
 {
 	if(dxl_get_rxpacket_error(ERRBIT_VOLTAGE) == 1)
-	printf("Input voltage error!\n");
+	;//printf("Input voltage error!\n");
 
 	if(dxl_get_rxpacket_error(ERRBIT_ANGLE) == 1)
-	printf("Angle limit error!\n");
+	;//printf("Angle limit error!\n");
 
 	if(dxl_get_rxpacket_error(ERRBIT_OVERHEAT) == 1)
-	printf("Overheat error!\n");
+	;//printf("Overheat error!\n");
 
 	if(dxl_get_rxpacket_error(ERRBIT_RANGE) == 1)
-	printf("Out of range error!\n");
+	;//printf("Out of range error!\n");
 
 	if(dxl_get_rxpacket_error(ERRBIT_CHECKSUM) == 1)
-	printf("Checksum error!\n");
+	;//printf("Checksum error!\n");
 
 	if(dxl_get_rxpacket_error(ERRBIT_OVERLOAD) == 1)
-	printf("Overload error!\n");
+	;//printf("Overload error!\n");
 
 	if(dxl_get_rxpacket_error(ERRBIT_INSTRUCTION) == 1)
-	printf("Instruction code error!\n");
+	;//printf("Instruction code error!\n");
 }

@@ -15,8 +15,26 @@ x = 0
 y = 1
 z = 2
 
+# Constants for mechanism control.
+
+numAvgs = 10 # number of times to average average hand pos
+
+restrainThresh = 0.05 # inches  # Best: 0.05
+restrainDist   = 0.05 # inches  # Best: 0.05
+sleepTime      = 0.01 # seconds # Best: 0.01
+
+xOffset = 0.0
+yOffset = 0.0
+zOffset = -20.0
+
+                # Last best:
+xScale = -1.0   # 1.0   
+yScale = -1.0   # 1.0  
+zScale =  1.0   # 1.0  
+
 def getFingerPos(leapController):
     """
+    OBSOLTE -- Use getHandPos instead.
     Uses the Leap motion to get a raw value of the finger position in mm in the
     coordinate system of the device (x, y, z). If no finger is detected,
     returns (0, 0, 0).
@@ -33,7 +51,56 @@ def getFingerPos(leapController):
     
     return (distalPos.x, distalPos.y, distalPos.z)
     
+def getHandPos(leapController):
+    """
+    Uses the Leap motion to get a raw value of the center of the palm in mm 
+    in the coordinate system of the device (x, y, z). If no finger is detected,
+    returns (0, 0, 0).
+    """
+    if not leapController.is_connected:
+        print "Connection lost."
+        return (0, 0, 0)
+    frame        = leapController.frame() # Frame
+    hands        = frame.hands            # HandList
+    hand         = hands.frontmost        # Hand
+    handPos      = hand.palm_position     # Vector
+    return (handPos.x, handPos.y, handPos.z)
 
+def getAvgPos(leapController):
+    """
+    Averages the hand and index finger positions. If either one is not detected,
+    returns (0, 0, 0). Averages numAvgs times.
+    """
+    if not leapController.is_connected:
+        print "Connection lost."
+        return (0, 0, 0)
+    trials = []
+    for i in range(numAvgs):
+        fingerPos = getFingerPos(leapController)
+        handPos = getHandPos(leapController)
+        if fingerPos == (0, 0, 0) or handPos == (0, 0, 0):
+            return (0, 0, 0)
+        else: # Got rid of handPos 
+            trials.append(((fingerPos[x] + fingerPos[x]) / 2.0,
+                          (fingerPos[y] + fingerPos[y]) / 2.0,
+                          (fingerPos[z] + fingerPos[z]) / 2.0))
+    return avgPoints(trials)
+
+def avgPoints(lst):
+    """
+    Averages a list 'lst' of tuples, each of form (x, y, z).
+    """
+    xSum = 0
+    ySum = 0
+    zSum = 0
+    
+    for point in lst:
+        xSum += point[x]
+        ySum += point[y]
+        zSum += point[z]
+    
+    return (xSum / len(lst), ySum / len(lst), zSum / len(lst))
+                 
 def transformPoint(p):
     """
     Takes a position 'p' = (x, y, z) in millimeters in the coordinate system 
@@ -47,14 +114,8 @@ def transformPoint(p):
     mmPerInch = 25.4
     (xOut, yOut, zOut) = (xOut / mmPerInch, yOut / mmPerInch, zOut / mmPerInch)
     # Next, translate the origin.
-    xOffset = 0.0
-    yOffset = 0.0
-    zOffset = -20.0
     (xOut, yOut, zOut) = (xOut + xOffset, yOut + yOffset, zOut + zOffset)
     # Finally, apply a scale factor.
-    xScale = 3.0
-    yScale = 3.0
-    zScale = 0.75
     (xOut, yOut, zOut) = (xScale * xOut, yScale * yOut, zScale * zOut)
     # TODO EDIT SCALE, OFFSET VALUES.
     return (xOut, yOut, zOut)
@@ -65,13 +126,13 @@ def restrainMove(pStart, pEnd):
     is <= 1 inch away from pStart, returns pEnd. Otherwise, returns the point
     1 inch from 'pStart' in the direction of 'pEnd'.
     """
-    if dist(pStart, pEnd) <= 1:
+    if dist(pStart, pEnd) <= restrainThresh:
         return pEnd
     else:
         dirVector = dirTo(pStart, pEnd)     # Vector from 'pStart' to 'pEnd'
         normDirVector = normalize(dirVector)    # Norm of 'dirVector'
-        transVector = sclProd(1, normDirVector) # Actual vector to translate;
-                                                # equal to 1" * 'dirVector'
+        transVector = sclProd(restrainDist, normDirVector) 
+                # Actual vector to translate; equal to 1" * 'dirVector'.
         return (pStart[x] + transVector[x],
                 pStart[y] + transVector[y],
                 pStart[z] + transVector[z])
@@ -107,6 +168,12 @@ def dist(p1, p2):
     """
     return norm(dirTo(p1, p2))
 
+def add(p, v):
+    """
+    Adds to point 'p' the vector 'v'.
+    """
+    return (p[x] + v[x], p[y] + v[y], p[z] + v[z])
+
 def sclProd(s, v):
     """
     Returns a vector consisting of scalar 's' multiplied by vector 'v'.
@@ -115,6 +182,21 @@ def sclProd(s, v):
     for i in range(len(v)):
         output[i] = s * v[i]
     return output
+
+def lineImg(p1, p2, step):
+    """
+    Returns a list of tuples representing the points from 'p1' to 'p2',
+    incrementing by size 'step'.
+    """
+    img = []
+    currentPos = p1
+    direction = dirTo(p1, p2)
+    while dist(currentPos, p2) >= step * 1.00: # Add 0% for rounding error
+        img.append((currentPos[x], currentPos[y], currentPos[z]))
+        currentPos = add(currentPos, sclProd(step, direction))
+    img.append(p2)
+    return img
+    
                      
 class ControllerThread(threading.Thread):
     """
@@ -128,23 +210,39 @@ class ControllerThread(threading.Thread):
         """
         threading.Thread.__init__(self, name = threadName)       
         self.stop = False
+        self.serConnected = False
         
         # Current estimated position of robot. 
         self.currentPos = HOME # Starts by default at home upon powerup.
         
         # Serial object.
         self.ser = serial.Serial()
-        self.ser.baudrate = 19200
-        self.ser.port = 0
-        self.ser.open()
-        while not self.ser.isOpen():
-            time.sleep(0.05)
-        
+        self.ser.baudrate = 57600
+        self.ser.port = 5
+        try: 
+            self.ser.open()
+            while not self.ser.isOpen():
+                time.sleep(0.05)
+            self.serConnected = True
+        except Exception as e:
+            print "COULD NOT CONNECT OVER SERIAL."
+            time.sleep(1)
+            pass
         
         # Leap Controller.
         self.leapController = Leap.Controller()
         while not self.leapController.is_connected:
             time.sleep(0.05)
+            
+    def outputImage(self, img):
+        """
+        Outputs the image 'img', which consists of a list of tuples of the form
+        (x, y, z).
+        """
+        for p in img:
+            self.outputPosition(p)
+        self.outputPosition(HOME)
+            
             
     def outputPosition(self, p):
         """
@@ -158,40 +256,64 @@ class ControllerThread(threading.Thread):
                   str(int(round(y * 1000))) +
                   "," +                  
                   str(int(round(z * 1000))) +
-                  "*")
+                  "*y")
         # Write over the serial line.
+##        print(output)
         self.ser.write(output)
+        time.sleep(sleepTime)
         
+    def listenToHand(self):
+        """
+        Listens to hand position information and outputs it to the Delta.
+        """
+        posOut = self.currentPos # Position to be outputted to move to.
+                                 # By default, output current position
+                                 # (don't move).
+####        print "START:      " + str(self.currentPos)
+        pos = getAvgPos(self.leapController)
+####        print "FINGER:     " + str(fingerPos)
+            
+        if pos != (0.0, 0.0, 0.0): # Data from LeapMotion is good            
+            desiredPos = transformPoint(pos) # Desired move position
+####            print "DESIRED:    " + str(desiredPos)
+            boundedPos = boundDestination(self.currentPos, desiredPos)
+####            print "BOUNDED:    " + str(boundedPos)
+            restrainedPos = restrainMove(self.currentPos, boundedPos)
+                # Make move distance no more than 1" for mechanism safety.
+####            print "RESTRAINED: " + str(restrainedPos
+####            print "\n"
+            posOut = restrainedPos
+
+        # SEND 'posOut' TO THE ROBOT, if serial connected.
+        if self.serConnected:
+            self.outputPosition(posOut)
+        print "%.3f   %.3f   %.3f" % (posOut[x], posOut[y], posOut[z])
+
+        self.currentPos = posOut # Save position just sent to robot.
     
     def run(self):
         """
         Causes thread to run indefinitely, until 'self.stop' is set True.
-        """ 
-        while not self.stop:
-            posOut = self.currentPos # Position to be outputted to move to.
-                                     # By default, output current position
-                                     # (don't move).
-####            print "START:      " + str(self.currentPos)
-            fingerPos = getFingerPos(self.leapController)
-####            print "FINGER:     " + str(fingerPos)
-            
-            if fingerPos != (0.0, 0.0, 0.0): # Data from LeapMotion is good            
-                desiredPos = transformPoint(fingerPos) # Desired move position
-####                print "DESIRED:    " + str(desiredPos)
-                boundedPos = boundDestination(self.currentPos, desiredPos)
-####                print "BOUNDED:    " + str(boundedPos)
-                restrainedPos = restrainMove(self.currentPos, boundedPos)
-                    # Make move distance no more than 1" for mechanism safety.
-####                print "RESTRAINED: " + str(restrainedPos
-####                print "\n"
-                posOut = restrainedPos
-
-            # SEND 'posOut' TO THE ROBOT
-            self.outputPosition(posOut)
-####            print "OUT:         " + str(posOut)
-
-            self.currentPos = posOut # Save position just sent to robot.
-            time.sleep(0.10) # Sloppy way to ensure robot gets to position.
-                             # Better would be to have feedback.
+        """         
+        handTrack = 1;
+        record    = 0;
+        playback  = 0;
+        
+        posCount = 0; # Number of positions recorded.
+        MAX_POS  = 1000 # Max number of positions to record
+        positions = []
+        
+        # Hand Tracking.
+        if handTrack:
+            while not self.stop:
+                self.listenToHand()
+                if record:
+                    if posCount < MAX_POS:
+                        pass # CONTINUE HERE
+                        #if not 
+                        #    positions.append(self.currentPos)
+                        #    posCount += 1
+            if playback:
+                self.outputImage(positions)
         
         self.ser.close() # Close serial after thread is killed.
