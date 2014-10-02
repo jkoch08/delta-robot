@@ -17,10 +17,12 @@ z = 2
 
 # Constants for mechanism control.
 
-numAvgs = 10 # number of times to average average hand pos
+MAX_POS  = 10000 # Max number of positions to record
 
-restrainThresh = 0.05 # inches  # Best: 0.05
-restrainDist   = 0.05 # inches  # Best: 0.05
+numAvgs = 25 # number of times to average average hand pos
+
+restrainThresh = 0.15 # inches  # Best: 0.12
+restrainDist   = 0.15 # inches  # Best: 0.12
 sleepTime      = 0.01 # seconds # Best: 0.01
 
 xOffset = 0.0
@@ -209,7 +211,11 @@ class ControllerThread(threading.Thread):
         Creates a new ControllerThread named 'threadName'.
         """
         threading.Thread.__init__(self, name = threadName)       
-        self.stop = False
+        self.handTrack = True; # If controller should track
+        self.record    = True; # If controller should record while tracking
+        self.playback  = True; # If controller should playback after stopping
+        self.stop = False      # indicates controler should stop
+        self.replay = False    # indicates controller is should replay
         self.serConnected = False
         
         # Current estimated position of robot. 
@@ -221,18 +227,17 @@ class ControllerThread(threading.Thread):
         self.ser.port = 5
         try: 
             self.ser.open()
-            while not self.ser.isOpen():
-                time.sleep(0.05)
+            time.sleep(0.1) # Wait for serial to open
             self.serConnected = True
         except Exception as e:
             print "COULD NOT CONNECT OVER SERIAL."
-            time.sleep(1)
-            pass
+            return
         
         # Leap Controller.
         self.leapController = Leap.Controller()
-        while not self.leapController.is_connected:
-            time.sleep(0.05)
+        time.sleep(0.4) # Wait for leap to connect
+        if not self.leapController.is_connected:
+            print "LEAP MOTION IS NOT CONNECTED."
             
     def outputImage(self, img):
         """
@@ -241,7 +246,10 @@ class ControllerThread(threading.Thread):
         """
         for p in img:
             self.outputPosition(p)
+            if self.stop:
+                return
         self.outputPosition(HOME)
+        print("'p' to playback - Enter to cancel")
             
             
     def outputPosition(self, p):
@@ -295,25 +303,25 @@ class ControllerThread(threading.Thread):
         """
         Causes thread to run indefinitely, until 'self.stop' is set True.
         """         
-        handTrack = 1;
-        record    = 0;
-        playback  = 0;
-        
+       
         posCount = 0; # Number of positions recorded.
-        MAX_POS  = 1000 # Max number of positions to record
         positions = []
         
         # Hand Tracking.
-        if handTrack:
+        if self.handTrack:
             while not self.stop:
                 self.listenToHand()
-                if record:
+                if self.record:
                     if posCount < MAX_POS:
-                        pass # CONTINUE HERE
-                        #if not 
-                        #    positions.append(self.currentPos)
-                        #    posCount += 1
-            if playback:
-                self.outputImage(positions)
+                        positions.append(self.currentPos)
+                        posCount += 1
+            if self.playback:
+                print("'p' to playback - Enter to cancel")
+                self.stop = False # Resets -- awaiting a new True command
+                # Needs to dwell and wait for response from main thread.
+                while not self.stop:
+                    if self.replay:
+                        self.replay = False
+                        self.outputImage(positions)
         
         self.ser.close() # Close serial after thread is killed.
