@@ -1,0 +1,22 @@
+shift # when turning on
+
+help
+
+ld
+
+files > transmit file > .hex
+
+go
+
+go to position
+$xthou,ythou,zthou*
+
+
+To build in atmel studio:
+
+Project > Build
+
+Check hex file updated recently
+
+Port: COM6
+BOD: 57600
