@@ -19,11 +19,11 @@ z = 2
 
 MAX_POS  = 10000 # Max number of positions to record
 
-numAvgs = 25 # number of times to average average hand pos
+numAvgs = 25 #Best 25 # number of times to average average hand pos
 
-restrainThresh = 0.15 # inches  # Best: 0.12
-restrainDist   = 0.15 # inches  # Best: 0.12
-sleepTime      = 0.01 # seconds # Best: 0.01
+restrainThresh = 0.15 # inches  # Best: 0.15
+restrainDist   = 0.15 # inches  # Best: 0.15
+sleepTime      = 0.001 # seconds # Best: 0.001
 
 xOffset = 0.0
 yOffset = 0.0
@@ -224,7 +224,7 @@ class ControllerThread(threading.Thread):
         # Serial object.
         self.ser = serial.Serial()
         self.ser.baudrate = 57600
-        self.ser.port = 5
+        self.ser.port = 4 # = COM port - 1
         try: 
             self.ser.open()
             time.sleep(0.1) # Wait for serial to open
