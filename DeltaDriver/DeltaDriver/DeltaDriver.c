@@ -33,6 +33,12 @@
 #define CONFIRM_DATA 9
 #define SEND_DATA 10
 
+//positionDataTypes
+#define POSITION 11
+#define ANGLE 12
+
+
+
 /// Control table address
 #define P_GOAL_POSITION_L		30
 #define P_GOAL_POSITION_H		31
@@ -47,6 +53,7 @@
 //Declare global variables
 int parseState = WATCH_BEGIN;
 int dataState = OLD_DATA;
+int positionDataType = POSITION;
 
 double xBuffer = 0;
 double yBuffer = 0;
@@ -129,7 +136,7 @@ int main(void)
 			;//printf("\nError!\n");
 			};
 		
-		if(dataState == NEW_DATA){
+	if(dataState == NEW_DATA && positionDataType == POSITION){
 			p.x = (xBuffer)/1000.;
 			p.y = (yBuffer)/1000.;
 			p.z = (zBuffer)/1000.;
@@ -151,6 +158,7 @@ int main(void)
 					;//printf("Angle 1: %f;  Angle 2: %f;  Angle 3: %f\n", angles[0], angles[1], angles[2]);
 					;//printf("Motor 1: %f;  Motor 2: %f;  Motor 3: %f\n", (int) angles[0]*11.3778, (int) angles[1]*11.3778, (int) angles[2]*11.3778);
 					;//printf("Confirm?? (y/n)\n");
+					dataState = SEND_DATA;
 				}
 			
 				dataState = CONFIRM_DATA;
@@ -164,6 +172,12 @@ int main(void)
 			
 			
 			
+		}
+		else if(dataState == NEW_DATA){//receiving angle command
+			dxl_write_word( 1, P_GOAL_POSITION_L, (int) xBuffer ); //4096./360=11.3778  <--- Ticks per degree
+			dxl_write_word( 2, P_GOAL_POSITION_L, (int) yBuffer ); //Command #2
+			dxl_write_word( 3, P_GOAL_POSITION_L, (int) zBuffer ); //Command #3
+			dataState = OLD_DATA;
 		}
 		else if((dataState == SEND_DATA)){
 			dxl_write_word( 1, P_GOAL_POSITION_L, (int) angles[0]*11.3778 ); //4096./360=11.3778  <--- Ticks per degree
@@ -186,12 +200,22 @@ int parseAll(char dataIn){
 	switch (parseState){
 		
 		case WATCH_BEGIN:
-			if(dataIn == '$'){
+			if(dataIn == '$'){//Position Command
 				parseState = WATCH_X;
 				xBuffer = 0;
 				yBuffer = 0;
 				zBuffer = 0;
 				signState = POSITIVE;	
+				positionDataType = POSITION;
+				;//printf("\nReading Packet...\n");
+			}
+			else if(dataIn == '%'){//Angle Command
+				parseState = WATCH_X;
+				xBuffer = 0;
+				yBuffer = 0;
+				zBuffer = 0;
+				signState = POSITIVE;
+				positionDataType = ANGLE;
 				;//printf("\nReading Packet...\n");
 			}
 			else if((dataIn == 'y') && (dataState == CONFIRM_DATA)){
